@@ -29,10 +29,10 @@ def write_df(df, matched_df, outfilename):
         num_m_length += m_length
         num_w_length += w_length
 
-        # if w_length > m_length:
-        #     w_df = w_df.sample(m_length)
-        # elif m_length > w_length:
-        #     m_df = m_df.sample(w_length)
+        if w_length > m_length:
+            w_df = w_df.sample(m_length)
+        elif m_length > w_length:
+            m_df = m_df.sample(w_length)
 
         final_df = final_df.append(w_df, ignore_index=True)
         final_df = final_df.append(m_df, ignore_index=True)
