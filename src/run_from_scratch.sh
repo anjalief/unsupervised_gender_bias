@@ -1,9 +1,10 @@
 #!/bin/bash
-source /projects/tir1/users/anjalief/anaconda3/bin/activate test_env
 
 ################################## TO FILL IN ############################################################
-RT_GENDER_DATA="/projects/tir3/users/anjalief/gender_bias_test/rt_gender" # the path to the rt_gender data set, which can be downloaded here: https://nlp.stanford.edu/robvoigt/rtgender/
-TOP_DIR="/projects/tir3/users/anjalief/gender_bias_test" # Path to store script outputs
+source activate your-env-here
+
+RT_GENDER_DATA="PATH-TO-DATA" # the path to the rt_gender data set, which can be downloaded here: https://nlp.stanford.edu/robvoigt/rtgender/
+TOP_DIR="PATH-TO-DATA" # Path to store script outputs
 
 SUFFIX="facebook_wiki"  # Flip comment to change which data set to run
 # SUFFIX="facebook_congress"
@@ -38,16 +39,16 @@ cd preprocessing_scripts
 # # run_cmd
 
 # Tokenize the rt_gender response data. Split the RtGender corpus into the same data splits as the paper
-# python preprocess_rtgender.py --input_file ${RESPONSE_FILE} --output_dir ${RT_GENDER_DATA} --header_to_tokenize 'response_text'
-# python make_manual_data_splits.py --response_tsv ${TOK_RESPONSE_FILE} --train_ids ../../${SUFFIX}_data/train_op_ids.txt --test_ids ../../${SUFFIX}_data/test_op_ids.txt --valid_ids ../../${SUFFIX}_data/valid_op_ids.txt --outdirname ${DATA_DIR}
+python preprocess_rtgender.py --input_file ${RESPONSE_FILE} --output_dir ${RT_GENDER_DATA} --header_to_tokenize 'response_text'
+python make_manual_data_splits.py --response_tsv ${TOK_RESPONSE_FILE} --train_ids ../../${SUFFIX}_data/train_op_ids.txt --test_ids ../../${SUFFIX}_data/test_op_ids.txt --valid_ids ../../${SUFFIX}_data/valid_op_ids.txt --outdirname ${DATA_DIR}
 
 
 ########################################### Do propensity matching ##################################
-# cmd="python write_train_op_posts.py --posts_csv ${POST_FILE} --train_ids ../../${SUFFIX}_data/train_op_ids.txt --outfilename ${DATA_DIR}/train_op_posts.tsv"
-# run_cmd
+cmd="python write_train_op_posts.py --posts_csv ${POST_FILE} --train_ids ../../${SUFFIX}_data/train_op_ids.txt --outfilename ${DATA_DIR}/train_op_posts.tsv"
+run_cmd
 
-# cmd="python write_train_op_posts.py --posts_csv ${POST_FILE} --train_ids ../../${SUFFIX}_data/valid_op_ids.txt --outfilename ${DATA_DIR}/valid_op_posts.tsv"
-# run_cmd
+cmd="python write_train_op_posts.py --posts_csv ${POST_FILE} --train_ids ../../${SUFFIX}_data/valid_op_ids.txt --outfilename ${DATA_DIR}/valid_op_posts.tsv"
+run_cmd
 
 cd ..
 mkdir -p ${DATA_DIR}/op_posts_matching
@@ -79,14 +80,14 @@ run_cmd
 cmd="python do_name_subs.py --training_file ${DATA_DIR}/train.${MATCHED_SUFFIX}.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}_${MATCHED_SUFFIX}.txt"
 run_cmd
 
-# cmd="python do_name_subs.py --training_file ${DATA_DIR}/train.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt"
-# run_cmd
+cmd="python do_name_subs.py --training_file ${DATA_DIR}/train.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt"
+run_cmd
 
-# cmd="python do_name_subs.py --training_file ${DATA_DIR}/test.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/test.${SUBS_SUFFIX}.txt"
-# run_cmd
+cmd="python do_name_subs.py --training_file ${DATA_DIR}/test.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/test.${SUBS_SUFFIX}.txt"
+run_cmd
 
-# cmd="python do_name_subs.py --training_file ${DATA_DIR}/valid.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.txt"
-# run_cmd
+cmd="python do_name_subs.py --training_file ${DATA_DIR}/valid.txt --subs_file ./new_subs.txt --output_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.txt"
+run_cmd
 
 
 ########################### Add log odds to training data ###########################################
@@ -94,20 +95,20 @@ run_cmd
 cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}_${MATCHED_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${EXTRA_SUFFIX}.txt --odds_column ${ODDS_COL} --add_log_odds"
 run_cmd
 
-# cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${SUFFIX}.${EXTRA_SUFFIX}.txt --odds_column ${ODDS_COL} --add_log_odds"
-# run_cmd
+cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${SUFFIX}.${EXTRA_SUFFIX}.txt --odds_column ${ODDS_COL} --add_log_odds"
+run_cmd
 
 cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}_${MATCHED_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${NO_SUFFIX}.txt"
 run_cmd
 
-# cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${SUFFIX}.${NO_SUFFIX}.txt"
-# run_cmd
+cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/train.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/train.${SUBS_SUFFIX}.${SUFFIX}.${NO_SUFFIX}.txt"
+run_cmd
 
-# cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/test.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/test.${SUBS_SUFFIX}.${SUFFIX}.txt"
-# run_cmd
+cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/test.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/test.${SUBS_SUFFIX}.${SUFFIX}.txt"
+run_cmd
 
-# cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.${SUFFIX}.txt"
-# run_cmd
+cmd="python add_log_odds_feats.py --input_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.txt --output_file ${DATA_DIR}/valid.${SUBS_SUFFIX}.${SUFFIX}.txt"
+run_cmd
 
 
 
@@ -118,9 +119,9 @@ mkdir -p ${DATA_DIR}/matched_notopics_${SUBS_SUFFIX}
 cmd="python train.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${NO_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/matched_notopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_matched_notopics.model --gpu 0 --batch_size 32  --write_attention --epochs 5 --lr 0.0001 "
 run_cmd
 
-# mkdir -p ${DATA_DIR}/baseline_notopics_${SUBS_SUFFIX}
-# cmd="python train.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${SUFFIX}.${NO_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/baseline_notopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_baseline_notopics.model --gpu 0 --batch_size 32 --write_attention --epochs 5 --lr 0.0001"
-# run_cmd
+mkdir -p ${DATA_DIR}/baseline_notopics_${SUBS_SUFFIX}
+cmd="python train.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${SUFFIX}.${NO_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/baseline_notopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_baseline_notopics.model --gpu 0 --batch_size 32 --write_attention --epochs 5 --lr 0.0001"
+run_cmd
 
 mkdir -p ${DATA_DIR}/matched_withtopics_${SUBS_SUFFIX}
 cmd="python train_ganlike_multiple_decoders.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${MATCHED_SUFFIX}.${EXTRA_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/matched_withtopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_matched_withtopics.model --gpu 0 --batch_size 32  --write_attention --c_steps 3 --t_steps 10 --epochs 3 --lr 0.0001"
@@ -128,9 +129,9 @@ run_cmd
 
 
 # Only for the Wiki model, we changed lr to 0.00099999 to stop it from nanning out
-# mkdir -p ${DATA_DIR}/baseline_withtopics_${SUBS_SUFFIX}
-# cmd="python train_ganlike_multiple_decoders.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${SUFFIX}.${EXTRA_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/baseline_withtopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_baseline_withtopics.model --gpu 0 --batch_size 32  --write_attention --c_steps 3 --t_steps 10 --epochs 3 --lr 0.00099999"
-# run_cmd
+mkdir -p ${DATA_DIR}/baseline_withtopics_${SUBS_SUFFIX}
+cmd="python train_ganlike_multiple_decoders.py --data RT_GENDER --base_path ${DATA_DIR} --train_file train.${SUBS_SUFFIX}.${SUFFIX}.${EXTRA_SUFFIX}.txt --valid_file valid.${SUBS_SUFFIX}.${SUFFIX}.txt --test_file test.${SUBS_SUFFIX}.${SUFFIX}.txt --save_dir ${DATA_DIR}/baseline_withtopics_${SUBS_SUFFIX} --model RNN --model_name rt_gender_${SUFFIX}_baseline_withtopics.model --gpu 0 --batch_size 32  --write_attention --c_steps 3 --t_steps 10 --epochs 3 --lr 0.00099999"
+run_cmd
 
 
 ##################################### Run Models on micro data ######################################################

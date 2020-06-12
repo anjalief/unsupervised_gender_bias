@@ -5,10 +5,11 @@
 # Models were trained with CUDA version 9.0 and TITAN X GPU
 #################################################################################
 
-source /projects/tir1/users/anjalief/anaconda3/bin/activate test_env
 
 ################################## TO FILL IN ############################################################
-TOP_DIR="/projects/tir3/users/anjalief/adversarial_gender/unsupervised_gender_bias_models" # the path to unzipped tarball of saved models
+source activate your-env-here
+
+TOP_DIR="DATA-PATH-HERE" # the path to unzipped tarball of saved models
 
 # SUFFIX="facebook_wiki"  # Flip comment to change which data set to run
 SUFFIX="facebook_congress"
