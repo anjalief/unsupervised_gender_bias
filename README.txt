@@ -1,6 +1,6 @@
 This repository contains code for the paper:
 
-Field, Anjalie and Yulia Tsvetkov, "Unsupervised Discovery of Implicit Gender Bias", https://arxiv.org/abs/2004.08361
+Field, Anjalie and Yulia Tsvetkov, "Unsupervised Discovery of Implicit Gender Bias", EMNLP, 2020 https://arxiv.org/abs/2004.08361
 
 
 The file src/run_from_scratch.sh contains run commands for the primary pipeline, to create data splits and train models from scratch. This pipeleine requires separately downloading the RtGender dataset, which is available here: https://nlp.stanford.edu/robvoigt/rtgender/
