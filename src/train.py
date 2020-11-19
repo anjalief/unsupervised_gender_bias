@@ -404,9 +404,9 @@ def main():
   # trainloss = evaluate(best_model, train_iter, optimizer, criterion, args, datatype='train', writetopics=args.save_output_topics, itos=TEXT.vocab.itos)
   if args.load:
     if args.latest:
-      best_model = torch.load(args.save_dir+"/"+args.model_name+"_latestmodel")
+      best_model = torch.load(args.save_dir+"/"+args.model_name+"_latestmodel", map_location=device)
     else:
-      best_model = torch.load(args.save_dir+"/"+args.model_name+"_bestmodel")
+      best_model = torch.load(args.save_dir+"/"+args.model_name+"_bestmodel", map_location=device)
   else:
     try:
       best_valid_loss = None
