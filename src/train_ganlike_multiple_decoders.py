@@ -475,9 +475,9 @@ def main():
 
   if args.load:
     if args.latest:
-      best_model = torch.load(args.save_dir+"/"+args.model_name+"_latestmodel")
+      best_model = torch.load(args.save_dir+"/"+args.model_name+"_latestmodel", map_location=device)
     else:
-      best_model = torch.load(args.save_dir+"/"+args.model_name+"_bestmodel")
+      best_model = torch.load(args.save_dir+"/"+args.model_name+"_bestmodel", map_location=device)
   else:
     try:
       best_valid_loss = None
